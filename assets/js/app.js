@@ -665,6 +665,7 @@
       toggleMute: toggleMute,
       saveCurrent: saveCurrent,
       readLibrary: readLibrary,
+      writeLibrary: writeLibrary,
       clearLibrary: function () {
         writeLibrary([]);
         renderLibrary();

@@ -1,6 +1,6 @@
-#!/usr/bin/env node
+﻿#!/usr/bin/env node
 /* ==========================================================================
-   tools/verify.mjs — headless Chrome verification & screenshots.
+   tools/verify.mjs 鈥?headless Chrome verification & screenshots.
 
    Usage:
      node tools/verify.mjs --url "file:///.../index.html?selftest=1" --selftest
@@ -67,7 +67,7 @@ const chrome = spawn(
   { stdio: "ignore" }
 );
 
-const report = { ok: false, selenium: false, passed: 0, total: 0, results: [], consoleErrors: [] };
+const report = { ok: false, selftestRan: false, passed: 0, total: 0, results: [], consoleErrors: [] };
 
 async function waitForDevtools() {
   for (let i = 0; i < 120; i++) {
@@ -159,7 +159,7 @@ async function main() {
       await sleep(150);
     }
     if (selftestResult) {
-      report.selenium = true;
+      report.selftestRan = true;
       report.passed = selftestResult.passed;
       report.total = selftestResult.total;
       report.results = selftestResult.results;

@@ -253,6 +253,7 @@
 
     test("storage: 패턴 저장과 목록 반영이 동작한다 / 保存图案并刷新列表", function () {
       var app = global.BS.app;
+      var before = app.readLibrary();
       app.clearLibrary();
       var ok = app.saveCurrent("테스트 패턴");
       assert(ok === true, "save failed");
@@ -260,8 +261,9 @@
       var item = app.readLibrary()[0];
       var restored = P.deserialize(item.data);
       assert(P.countOn(restored) > 0, "saved pattern is empty");
-      app.clearLibrary();
-      assert(app.readLibrary().length === 0, "library not cleared");
+      // 테스트가 사용자의 저장 목록을 지우지 않도록 복원합니다.
+      // 恢复原有列表，避免测试清除用户已保存的图案。
+      app.writeLibrary(before);
     });
   }
 
