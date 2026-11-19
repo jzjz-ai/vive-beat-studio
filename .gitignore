@@ -1,0 +1,13 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Local browser profiles used by tools/verify.mjs
+.chrome-profile/
+*.log
+
+# Dependencies (the project itself has none)
+node_modules/

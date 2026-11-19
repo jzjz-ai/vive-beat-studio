@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>바이브 비트 스튜디오 / 节拍工坊 — VIVE BEAT STUDIO</title>
+  <meta name="description" content="브라우저에서 바로 만드는 16스텝 비트 메이커. / 在浏览器中即刻制作的 16 步节拍制作器。" />
+  <meta name="theme-color" content="#070a10" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237c5cff'/%3E%3Cstop offset='1' stop-color='%2322d3ee'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%230b0f14'/%3E%3Crect x='12' y='32' width='9' height='20' rx='3' fill='url(%23g)'/%3E%3Crect x='27' y='14' width='9' height='38' rx='3' fill='url(%23g)'/%3E%3Crect x='42' y='24' width='9' height='28' rx='3' fill='url(%23g)'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <div class="bg-orbs" aria-hidden="true"><span></span><span></span><span></span></div>
+  <a class="skip-link" href="#main">본문 바로가기 / 跳转到正文</a>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="brand-text">
+        <h1><span class="brand-en">VIVE</span> BEAT STUDIO</h1>
+        <p class="brand-sub">바이브 비트 스튜디오 <span class="sep">/</span> 节拍工坊</p>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <span class="badge">AI VIBE CODING</span>
+      <a class="btn ghost small" href="https://github.com/jzjz-ai/vive-beat-studio" target="_blank" rel="noopener" data-i18n="github"></a>
+    </div>
+  </header>
+
+  <p class="tagline" data-i18n="tagline"></p>
+
+  <main id="main" class="layout">
+    <div class="main-col">
+      <section class="panel transport" aria-labelledby="transportTitle">
+        <h2 id="transportTitle" class="sr-only">전송 제어 / 播放控制</h2>
+
+        <button id="playBtn" class="play-btn" type="button" aria-pressed="false">
+          <svg class="icon icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" /></svg>
+          <svg class="icon icon-stop" viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="6.5" width="11" height="11" rx="2" /></svg>
+          <span class="play-label" data-i18n="play"></span>
+        </button>
+
+        <div class="ctrl">
+          <label for="bpmRange" data-i18n="tempo"></label>
+          <div class="ctrl-row">
+            <input type="range" id="bpmRange" min="60" max="180" step="1" value="96" />
+            <output id="bpmOut" for="bpmRange">96</output>
+          </div>
+        </div>
+
+        <div class="ctrl">
+          <label for="swingRange" data-i18n="swing"></label>
+          <div class="ctrl-row">
+            <input type="range" id="swingRange" min="0" max="60" step="1" value="12" />
+            <output id="swingOut" for="swingRange">12%</output>
+          </div>
+        </div>
+
+        <div class="ctrl">
+          <label for="volRange" data-i18n="volume"></label>
+          <div class="ctrl-row">
+            <input type="range" id="volRange" min="0" max="100" step="1" value="80" />
+            <output id="volOut" for="volRange">80%</output>
+          </div>
+        </div>
+
+        <div class="ctrl select">
+          <label for="toneSel" data-i18n="tone"></label>
+          <select id="toneSel"></select>
+        </div>
+
+        <div class="ctrl select preset-ctrl">
+          <label for="presetSel" data-i18n="preset"></label>
+          <select id="presetSel"></select>
+        </div>
+
+        <div class="actions">
+          <button id="randomBtn" class="btn" type="button" data-i18n="randomize"></button>
+          <button id="clearBtn" class="btn ghost" type="button" data-i18n="clear"></button>
+        </div>
+      </section>
+
+      <section class="panel seq" aria-labelledby="seqTitle">
+        <div class="seq-top">
+          <h2 id="seqTitle" data-i18n="sequencer"></h2>
+          <p class="hint" data-i18n="seqHint"></p>
+        </div>
+        <div class="seq-scroll">
+          <div class="seq-header">
+            <div class="row-head-label" data-i18n="trackCol"></div>
+            <div class="ruler" id="ruler" aria-hidden="true"></div>
+          </div>
+          <div class="grid" id="grid" role="group" data-i18n-aria="ariaGrid"></div>
+        </div>
+        <p class="audio-hint" data-i18n="audioHint"></p>
+      </section>
+    </div>
+
+    <aside class="panel side" aria-label="내 패턴 / 我的图案">
+      <section>
+        <h2 data-i18n="myPatterns"></h2>
+        <form id="saveForm" class="save-row" autocomplete="off">
+          <input id="patName" type="text" maxlength="24" data-i18n-ph="patternNamePh" />
+          <button class="btn" type="submit" data-i18n="save"></button>
+        </form>
+        <p class="empty" id="patEmpty" data-i18n="noPatterns"></p>
+        <ul id="patList" class="pat-list"></ul>
+        <div class="io-row">
+          <button id="exportBtn" class="btn ghost" type="button" data-i18n="export"></button>
+          <button id="importBtn" class="btn ghost" type="button" data-i18n="import"></button>
+          <input type="file" id="importFile" accept="application/json,.json" hidden />
+        </div>
+      </section>
+
+      <section>
+        <h2 data-i18n="shortcuts"></h2>
+        <ul class="shortcuts">
+          <li><kbd>Space</kbd><span data-i18n="scPlay"></span></li>
+          <li><kbd>R</kbd><span data-i18n="scRandom"></span></li>
+          <li><kbd>C</kbd><span data-i18n="scClear"></span></li>
+        </ul>
+      </section>
+
+      <section class="about">
+        <h2 data-i18n="about"></h2>
+        <p data-i18n="aboutText"></p>
+      </section>
+    </aside>
+  </main>
+
+  <footer class="footer">
+    <p data-i18n="footerNote"></p>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <noscript>
+    <p class="noscript">이 앱을 사용하려면 JavaScript를 켜 주세요. / 请开启 JavaScript 以使用此应用。</p>
+  </noscript>
+
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/pattern.js"></script>
+  <script src="assets/js/audio.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/selftest.js"></script>
+</body>
+</html>
